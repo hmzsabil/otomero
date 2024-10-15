@@ -1,4 +1,3 @@
-import React from 'react'
 import { APIResponse, ImageDetails, ImageFilters, ImageItem, ResponseData } from './models';
 
 const apiKey = process.env.NEXT_PUBLIC_MUSEUM_API_KEY
