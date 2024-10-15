@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ImageItem } from '../lib/models'
 
 
@@ -55,11 +55,7 @@ export default function useGallery() {
 
   useEffect(() => {
     getFavImages()
-  }, [])
-
-  useEffect(() => {
-    console.log(favImages)
-  }, [favImages])
+  }, [getFavImages])
 
 
   return {

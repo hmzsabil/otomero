@@ -1,7 +1,6 @@
 'use client';
 
-import useGallery from '@/src/hooks/useGallery'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import HorizontalSlider from '../own/HorizontalSlider';
 import GridImages from '../own/GridImages';
 import { groupImages } from '@/src/lib/utils';

@@ -1,7 +1,7 @@
 import { ImageDetails, ImageItem } from '@/src/lib/models'
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState, useCallback, useContext } from 'react'
-import { ArrowRight, Heart } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Loading from './Loading'
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
@@ -19,7 +19,6 @@ import {
     TooltipTrigger,
 } from "@/src/components/ui/tooltip"
 import { Button } from '../ui/button';
-import useGallery from '@/src/hooks/useGallery';
 import { getImageInfo } from '@/src/lib/fetchData';
 import { GalleryContext } from '@/src/lib/GalleryContext';
 
@@ -32,7 +31,7 @@ export default function ImageHover({ image } : { image: ImageItem }) {
 
     const isFav = useMemo(() => {
         return favImages.map(img => img.id).includes(image?.id)
-    }, [favImages]);
+    }, [favImages, image?.id]);
 
 
     const handleToggleFav = useCallback(() => {

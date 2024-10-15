@@ -1,7 +1,7 @@
 "use client";
 
-import { APIResponse, ImageItem } from '@/src/lib/models'
-import React, { useEffect, useRef, useState } from 'react'
+import { ImageItem } from '@/src/lib/models'
+import React, { useEffect, useState } from 'react'
 import { groupImages } from '@/src/lib/utils';
 import BottomBar from '../own/BottomBar';
 import GridImages from '../own/GridImages';

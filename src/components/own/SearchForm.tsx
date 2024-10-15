@@ -1,5 +1,5 @@
 import { Search, X, Delete } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Input } from "../ui/input";
 import { cn } from "@/src/lib/utils";
 import gsap from "gsap";
@@ -59,7 +59,7 @@ export default function SearchForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSearchSubmit)} className="flex items-center gap-x-2" ref={formRef}>
 
-          <Button onClick={(e:any) => {
+          <Button onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             if (!searchOpen){
               e.preventDefault()
               handleSearchIconClick()
@@ -76,7 +76,7 @@ export default function SearchForm() {
               <FormItem>
                 <FormControl>
                   <div className="hidden items-center gap-x-2 border rounded-md pr-5 h-max lg:h-auto" ref={container}>
-                    <Input ref={input} autoFocus onChange={(e: any) => {
+                    <Input ref={input} autoFocus onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setSearchValue(e.target.value);
                       field.onChange(e.target.value)
                     }} value={searchValue} className={cn("text-[15px] border-0 h-full rounded-md focus-visible:outline-none lg:px-6 lg:py-3")} />

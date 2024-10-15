@@ -10,7 +10,7 @@ export default function HorizontalSlider({ children }: { children: React.ReactNo
 
 
     const animate = useCallback(() => {
-        let sections = gsap.utils.toArray(".slide");
+        const sections = gsap.utils.toArray(".slide");
 
         gsap.to(sections, {
             xPercent: -100 * (sections.length - 1),
@@ -23,13 +23,13 @@ export default function HorizontalSlider({ children }: { children: React.ReactNo
                 end: "+=3000",
             }
         });
-    }, [children])
+    }, [])
 
 
 
     useEffect(() => {
         animate()
-    }, [children])
+    }, [])
 
 
     return (

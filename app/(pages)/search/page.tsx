@@ -5,7 +5,7 @@ import React from 'react'
 import Link from 'next/link'
 
 export default async function page(req: NextRequest) {
-  const artist = (req as any).searchParams.artist
+  const artist = (req as unknown as any).searchParams.artist
 
   const imgs = await getImages({artist})
 
