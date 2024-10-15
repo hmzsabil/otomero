@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -58,10 +61,15 @@
 }
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border m-0;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
+  html {
+    font-size: calc(100vw / 1920 * 10);
+    background-color: black;
+  }
+  
 }
 
