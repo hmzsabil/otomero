@@ -1,12 +1,12 @@
+
 import SearchPage from '@/src/components/pages/SearchPage'
 import { getImages } from '@/src/lib/fetchData'
 import { NextRequest } from 'next/server'
 import React from 'react'
-import Link from 'next/link'
 import NoResult from '@/src/components/pages/NoResult'
 
-export default async function page(req: NextRequest) {
-  const artist = (req as unknown as any).searchParams.artist
+export default async function page({ searchParams }: { searchParams: { artist: string } }) {
+  const artist = searchParams.artist;
 
   const imgs = await getImages({artist})
 
@@ -25,3 +25,4 @@ export default async function page(req: NextRequest) {
     <SearchPage imgs={imgs.data.artObjects}/>
   )
 }
+
