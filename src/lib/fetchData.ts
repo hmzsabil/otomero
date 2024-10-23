@@ -53,9 +53,9 @@ export async function getImageInfo(imageId: string) {
             const details : ImageDetails = {
                 title: data.artObject.title,
                 artist: data.artObject.principalMaker,
-                description: data.artObject.plaqueDescriptionEnglish || 'Pas de description disponible',
-                dating: data.artObject.dating.presentingDate || 'Date inconnue', 
-                placeOfCreation: data.artObject.productionPlaces[0] || 'Lieu inconnu',
+                description: data.artObject.plaqueDescriptionEnglish || 'Unavailable Description',
+                dating: data.artObject.dating.presentingDate || 'Unknown Date', 
+                placeOfCreation: data.artObject.productionPlaces[0] || 'Unknown Place',
                 size_weight: data.artObject.subTitle
             };
 

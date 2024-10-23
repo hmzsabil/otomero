@@ -2,42 +2,32 @@
 
 
 import { ImageItem } from '@/src/lib/models'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import GridImages from '../own/GridImages'
 import HorizontalSlider from '../own/HorizontalSlider'
-import BottomBar from '../own/BottomBar'
 import { groupImages } from '@/src/lib/utils'
 
 export default function SearchPage({ imgs }: { imgs: ImageItem[] }) {
+    const groupedImgs = React.useMemo(() => groupImages(imgs, 4), [imgs]);
 
-    const [images, setImages] = useState<ImageItem[]>([])
 
 
-    useEffect(() => {
-        setImages(imgs)
-    }, [imgs])
+    if (imgs.length > 4) {
+        return (
+            <HorizontalSlider>
+                {groupedImgs.map((group, i) => (
+                    <div key={group.length} className='h-[90vh] w-full slide'>
+                        <GridImages imgs={group} />
+                    </div>
+                ))}
+            </HorizontalSlider>
+        )
+    }
 
-    
+
     return (
-        <>
-            {images.length > 4 ? <HorizontalSlider>
-                <div className='h-[90vh] w-full slide'>
-                    <GridImages imgs={groupImages(images, 4)[0]} />
-                </div>
-                <div className='h-[90vh] w-full slide'>
-                    <GridImages imgs={groupImages(images, 4)[1]} />
-                </div>
-                <div className='h-[90vh] w-full slide'>
-                    <GridImages imgs={groupImages(images, 4)[2]} />
-                </div>
-                <div className='h-[90vh] w-full slide'>
-                    <GridImages imgs={groupImages(images, 4)[3]} />
-                </div>
-                <div className='h-[90vh] w-full slide'>
-                    <GridImages imgs={groupImages(images, 4)[4]} />
-                </div>
-            </HorizontalSlider> : <div className='h-[90vh] w-full'><GridImages imgs={images} /></div>}
-            <BottomBar />
-        </>
+        <div className='h-[90vh] w-full'>
+            <GridImages imgs={imgs} />
+        </div>
     )
 }

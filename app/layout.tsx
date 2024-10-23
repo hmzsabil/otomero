@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from 'next/font/google'
-import { GalleryProvider } from "@/src/lib/GalleryContext";
+import { GalleryProvider } from "@/src/contexts/GalleryContext";
+import { DarkLightModeProvider } from "@/src/contexts/DarkLightModeContext";
+import PageLayout from "@/src/components/pages/PageLayout";
 
 export const metadata: Metadata = {
   title: "Otomoro Competition",
@@ -21,11 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>
-        <GalleryProvider>
+      <DarkLightModeProvider>
+        <PageLayout>
+          <GalleryProvider>
             {children}
-        </GalleryProvider>
-      </body>
+          </GalleryProvider>
+        </PageLayout>
+      </DarkLightModeProvider>
     </html>
   );
 }

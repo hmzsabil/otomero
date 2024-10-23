@@ -13,26 +13,31 @@ export default function useSearchForm() {
 
     const router = useRouter()
   
-    const handleSearchIconClick = useCallback(() => {
-      setSearchOpen(true);
-    }, [])
+    const handleSearchIconClick = useCallback((e:any) => {
+      if (!searchOpen){
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    }, [searchOpen])
   
     
   
-    const handleSearchCloseClick = useCallback(() => {
+    const handleSearchCloseClick = useCallback((e:any) => {
+      e.preventDefault();
       setSearchOpen(false);
       setSearchValue("");
-    }, [])
+    }, [searchOpen])
   
-    const handleSearchDeleteClick = useCallback(() => {
+    const handleSearchDeleteClick = useCallback((e:any) => {
+      e.preventDefault();
       setSearchValue("");
-    }, [])
+    }, [searchValue])
 
     const formSchema = useMemo(() => z.object({
-  artist: z.string().min(2, {
-    message: "Artist must be at least 2 characters.",
-  }),
-}), [])
+      artist: z.string().min(2, {
+        message: "Artist must be at least 2 characters.",
+      }),
+    }), [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

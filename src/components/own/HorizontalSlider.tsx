@@ -1,44 +1,38 @@
 'use client'
 
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { animateSlider } from '@/src/lib/animate';
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function HorizontalSlider({ children }: { children: React.ReactNode }) {
+    const sliderRef = useRef<HTMLDivElement | null>(null)
 
-
-    const animate = useCallback(() => {
-        const sections = gsap.utils.toArray(".slide");
-
-        gsap.to(sections, {
-            xPercent: -100 * (sections.length - 1),
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".horizontal-sliders",
-                pin: ".main",
-                pinSpacing: true,
-                scrub: 1,
-                end: "+=3000",
-            }
-        });
-    }, [])
+    
 
 
 
-    useEffect(() => {
-        animate()
-    }, [])
+    useLayoutEffect(() => {
+        if (!sliderRef.current) return;
+
+        let ctx = animateSlider(sliderRef)
+        return () => {
+            ctx.revert();
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, [children]);
+
 
 
     return (
-        <div className="overflow-x-hidden main">
-            <div className="flex flex-nowrap w-[500%] overflow-x-hidden gap-x-3">
-                <>
-                    {children}
-                </>
-            </div>
+        <div className="flex flex-nowrap w-[500%] overflow-x-hidden gap-x-3" ref={sliderRef}>
+            <>
+                {children}
+            </>
         </div>
     )
 }

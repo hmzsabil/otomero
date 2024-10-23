@@ -1,6 +1,7 @@
-import Home from '@/src/components/pages/Home'
+import HomeLayout from '@/src/components/pages/HomeLayout'
 import { getImages } from '@/src/lib/fetchData'
 import React from 'react'
+
 
 export default async function page() {
 
@@ -11,6 +12,6 @@ export default async function page() {
 
 
   return (
-      <Home images={reqImages.data.artObjects} />
+      <HomeLayout images={reqImages.data.artObjects} />
   )
 }

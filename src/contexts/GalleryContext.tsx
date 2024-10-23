@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { ImageItem } from './models'
+import { ImageItem } from '../lib/models'
 
 
 

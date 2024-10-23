@@ -12,12 +12,14 @@ import {
   FormMessage,
 } from "@/src/components/ui/form"
 import useSearchForm from "@/src/hooks/useSearchForm";
+import TooltipLayout from "./TooltipLayout";
+import { animateInput } from "@/src/lib/animate";
 
 export default function SearchForm() {
 
-  const input = useRef<HTMLInputElement>(null);
-  const container = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
+  const input = useRef<HTMLInputElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null)
+  const formRef = useRef<HTMLFormElement | null>(null)
 
   const {
     form,
@@ -27,46 +29,31 @@ export default function SearchForm() {
   } = useSearchForm()
 
 
-  const animateInput = useCallback(() => {
-    if (searchOpen) {
-      gsap.to(container.current, {
-        width: 150,
-        display: "flex",
-        duration: .9,
-        ease: "power2.Out",
-      });
-    }
-    else {
-      gsap.to(container.current, {
-        width: 0,
-        display: "none",
-        duration: .5,
-        ease: "power2.Out"
-      })
-    }
-  }, [searchOpen])
+
+  const focusOnInput = useCallback(() => {
+    if (!searchOpen || !input.current) return;
+
+    input.current.focus()
+  }, [searchOpen, input])
+  
+
 
   useEffect(() => {
-    animateInput()
-
-    if (searchOpen && input.current){
-      input.current.focus();
-    }
-  }, [searchOpen, animateInput])
+    animateInput(container, searchOpen)
+    setTimeout(() => {
+      focusOnInput()
+    }, 900)
+  }, [searchOpen, input , animateInput])
 
   return (
     <div className="flex items-center gap-x-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSearchSubmit)} className="flex items-center gap-x-2" ref={formRef}>
-
-          <Button onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            if (!searchOpen){
-              e.preventDefault()
-              handleSearchIconClick()
-            }
-          }} variant='ghost' type={searchOpen === true ? 'submit' : "button"} className="hover:bg-transparent hover:text-white hover:scale-110 transition-transform">
-            <Search size={20} className="cursor-pointer" />
-          </Button>
+          <TooltipLayout text={searchOpen ? 'Search...' : 'Open search'}>
+            <Button aria-label={searchOpen ? 'Search & Get Results' : 'Open Search Input'} onClick={handleSearchIconClick} variant='ghost' type={searchOpen === true ? 'submit' : "button"} className="hover:bg-transparent hover:text-inherit lg:hoverGrow">
+              <Search aria-description="search button" size={20} className="cursor-pointer" />
+            </Button>
+          </TooltipLayout>
 
 
           <FormField
@@ -75,24 +62,27 @@ export default function SearchForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className="hidden items-center gap-x-2 border rounded-md pr-5 h-max lg:h-auto" ref={container}>
-                    <Input ref={input} autoFocus onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setSearchValue(e.target.value);
-                      field.onChange(e.target.value)
-                    }} value={searchValue} className={cn("text-[15px] border-0 h-full rounded-md focus-visible:outline-none lg:px-6 lg:py-3")} />
-                    {searchValue.trim().length > 1 && <Delete size={20} className="cursor-pointer" onClick={handleSearchDeleteClick} />}
+                  <div aria-hidden={searchOpen ? "false" : "true"} className="hidden items-center gap-x-2" ref={container}>
+                    <div className="flex items-center gap-x-2 border rounded-md pr-5 h-max lg:h-auto">
+                      <Input aria-invalid={!!form.formState.errors} aria-describedby={form.formState.errors ? 'artist-error' : undefined} ref={input} autoFocus onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setSearchValue(e.target.value);
+                        field.onChange(e.target.value)
+                      }} value={searchValue} className={cn("text-[15px] border-0 h-full rounded-md focus-visible:outline-none lg:px-6 lg:py-3")} />
+                      {searchValue.trim().length > 1 && <Button onClick={handleSearchDeleteClick} aria-label="Delete Search Input" variant='ghost' className="hover:bg-transparent hover:text-white hover:scale-110 transition-transform"><Delete size={20} /></Button>}
+                    </div>
+                  <TooltipLayout text='Close search'>
+                    <Button onClick={handleSearchCloseClick} aria-label="close search input" variant='ghost' className="hover:bg-transparent hover:text-white hover:scale-110 transition-transform">
+                      <X size={20} className={cn("transition-opacity duration-200 delay-300", searchOpen ? 'opacity-100' : "opacity-0")} />
+                    </Button>
+                  </TooltipLayout>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage id="artist-error" />
               </FormItem>
             )}
           />
         </form>
       </Form>
-
-      <Button onClick={handleSearchCloseClick} variant='ghost' className="hover:bg-transparent hover:text-white hover:scale-110 transition-transform">
-        <X size={20} className={cn("transition-opacity duration-200 delay-300", searchOpen ? 'opacity-100' : "opacity-0")} />
-      </Button>
     </div>
   )
 };

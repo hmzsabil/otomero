@@ -68,7 +68,10 @@
   }
   html {
     font-size: calc(100vw / 1920 * 10);
-    background-color: black;
+    scroll-behavior: smooth;
+  }
+  .hoverGrow {
+    @apply hover:bg-transparent hover:scale-150 transition-all;
   }
   
 }
